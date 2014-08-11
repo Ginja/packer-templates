@@ -66,8 +66,8 @@
 
 ### Additional Notes
 
-* The [Packer template](https://github.com/Ginja/packer-templates/tree/master/input/CentOS-6.5-x86_64) used to create this box
+* The [Packer template](https://github.com/Ginja/packer-templates/tree/master/input/CentOS-6.5-x86_64/RVM-Ruby-2.0.0-p451-Puppet-Gem) used to create this box
 * Available as a [VagrantCloud Box](https://vagrantcloud.com/ginja/centos-6.5-x64-rvm-ruby2.0.0-puppet)
   * The VagrantCloud box is hosted from my Dropbox account, so there is a 20GB/day bandwidth limit. While it's unlikely that this threshold will ever be reached, if you do find yourself unable to download this box, you may need to try again the next day.
-* Current size is 412MB 
+* Current size is 412 MB 
 * Last updated on April 16, 2014

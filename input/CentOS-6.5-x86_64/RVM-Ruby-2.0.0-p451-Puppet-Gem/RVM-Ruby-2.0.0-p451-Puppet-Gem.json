@@ -1,0 +1,63 @@
+{
+  "variables": {
+      "ssh_name": "root",
+      "ssh_pass": "vagrant",
+      "osfamily": "centos",
+      "os_major_vers": "6",
+      "os": "CentOS-6.5-x86_64",
+      "build": "RVM-Ruby-2.0.0-p451-Puppet-Gem",
+      "image": "http://mirror.its.sfu.ca/mirror/CentOS/6.5/isos/x86_64/CentOS-6.5-x86_64-minimal.iso",
+      "md5_checksum": "0d9dc37b5dd4befa1c440d2174e88a87",
+  },
+  "builders": [{
+    "type": "virtualbox-iso",
+    "vm_name": "{{user `os`}}-{{user `build`}}",
+    "guest_os_type": "RedHat_64",
+    "vboxmanage": [
+      ["modifyvm", "{{.Name}}", "--memory", "1024"]
+    ],
+    "headless": false,
+    "output_directory": "../../../output/{{user `os`}}/{{user `build`}}",
+
+    "disk_size" : 20000,
+
+    "iso_url": "{{user `image`}}",
+    "iso_checksum": "{{user `md5_checksum`}}",
+    "iso_checksum_type": "md5",
+
+    "http_directory" : "../kickstarts",
+    "http_port_min" : 9001,
+    "http_port_max" : 9001,
+
+    "ssh_username": "{{user `ssh_name`}}",
+    "ssh_password": "{{user `ssh_pass`}}",
+    "ssh_wait_timeout": "30m",
+
+    "shutdown_command": "echo {{user `ssh_pass`}} | sudo -S shutdown -P now",
+
+    "boot_command": [
+      "<esc><wait>",
+      "linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `build`}}.cfg",
+      "<enter>"
+    ]
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "only": ["virtualbox-iso"],
+    "scripts": [
+      "../../scripts/{{user `osfamily`}}/vagrant_guest_tools.sh",
+      "../../scripts/{{user `osfamily`}}/fix-slow-dns.sh",
+      "../../scripts/{{user `osfamily`}}/{{user `os_major_vers`}}/cleanup.sh",
+      "../../scripts/common/vagrant.sh",
+      "../../scripts/common/sshd.sh",
+      "../../scripts/common/shrink.sh"
+    ]
+  }],
+  "post-processors": [{
+    "type": "vagrant",
+    "only": ["virtualbox-iso"],
+    "compression_level": 1,
+    "output": "../../../output/{{user `os`}}/{{user `build`}}/{{user `os`}}-{{user `build`}}.box",
+    "keep_input_artifact": true
+  }]
+}

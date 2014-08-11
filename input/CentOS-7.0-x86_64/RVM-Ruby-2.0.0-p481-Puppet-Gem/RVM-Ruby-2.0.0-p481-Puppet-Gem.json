@@ -3,9 +3,11 @@
       "ssh_name": "root",
       "ssh_pass": "vagrant",
       "osfamily": "centos",
-      "os": "CentOS-6.5-x86_64",
-      "build": "RVM-Ruby-2.0.0-p451-Puppet-Gem",
-      "image": "http://mirror.its.sfu.ca/mirror/CentOS/6.5/isos/x86_64/CentOS-6.5-x86_64-minimal.iso"
+      "os_major_vers": "7",
+      "os": "CentOS-7.0-x86_64",
+      "build": "RVM-Ruby-2.0.0-p481-Puppet-Gem",
+      "image": "http://mirror.its.sfu.ca/mirror/CentOS/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-Minimal.iso",
+      "md5_checksum": "e3afe3f1121d69c40cc23f0bafa05e5d"
   },
   "builders": [{
     "type": "virtualbox-iso",
@@ -15,15 +17,15 @@
       ["modifyvm", "{{.Name}}", "--memory", "1024"]
     ],
     "headless": false,
-    "output_directory": "../../output/{{user `os`}}/{{user `build`}}",
+    "output_directory": "../../../output/{{user `os`}}/{{user `build`}}",
 
     "disk_size" : 20000,
 
     "iso_url": "{{user `image`}}",
-    "iso_checksum": "0d9dc37b5dd4befa1c440d2174e88a87",
+    "iso_checksum": "{{user `md5_checksum`}}",
     "iso_checksum_type": "md5",
 
-    "http_directory" : "kickstarts",
+    "http_directory" : "../kickstarts",
     "http_port_min" : 9001,
     "http_port_max" : 9001,
 
@@ -43,19 +45,19 @@
     "type": "shell",
     "only": ["virtualbox-iso"],
     "scripts": [
-      "../scripts/{{user `osfamily`}}/vagrant_guest_tools.sh",
-      "../scripts/{{user `osfamily`}}/fix-slow-dns.sh",
-      "../scripts/{{user `osfamily`}}/cleanup.sh",
-      "../scripts/common/vagrant.sh",
-      "../scripts/common/sshd.sh",
-      "../scripts/common/shrink.sh"
+      "../../scripts/{{user `osfamily`}}/vagrant_guest_tools.sh",
+      "../../scripts/{{user `osfamily`}}/fix-slow-dns.sh",
+      "../../scripts/{{user `osfamily`}}/{{user `os_major_vers`}}/cleanup.sh",
+      "../../scripts/common/vagrant.sh",
+      "../../scripts/common/sshd.sh",
+      "../../scripts/common/shrink.sh"
     ]
   }],
   "post-processors": [{
     "type": "vagrant",
     "only": ["virtualbox-iso"],
     "compression_level": 1,
-    "output": "../../output/{{user `os`}}/{{user `build`}}/{{user `os`}}-{{user `build`}}.box",
+    "output": "../../../output/{{user `os`}}/{{user `build`}}/{{user `os`}}-{{user `build`}}.box",
     "keep_input_artifact": true
   }]
 }

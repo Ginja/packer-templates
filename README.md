@@ -9,12 +9,12 @@ This repo contains Packer templates for building [Vagrant](http://www.vagrantup.
 ## Usage
 
 ```bash
-# cd into the template folder underneath input/ that you want to use
+# cd into the template folder you want to build underneath input/  
 # In this example, let's assume that's CentOS-6.5-x86_64/RVM-Ruby-2.0.0-p451-Puppet-Gem
 cd input/CentOS-6.5-x86_64/RVM-Ruby-2.0.0-p451-Puppet-Gem
 
-# Run packer build on the *.cfg file inside
-packer build RVM-Ruby-2.0.0-p451-Puppet-Gem.cfg
+# Run packer build on the *.json file inside
+packer build RVM-Ruby-2.0.0-p451-Puppet-Gem.json
 ```
 
 If a build is successful, the output will be available in the matching folder path underneath the output directory. In the example above that would be:
